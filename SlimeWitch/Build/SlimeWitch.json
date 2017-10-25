@@ -1,0 +1,9 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "SlimeWitch.data.unityweb",
+"asmCodeUrl": "SlimeWitch.asm.code.unityweb",
+"asmMemoryUrl": "SlimeWitch.asm.memory.unityweb",
+"asmFrameworkUrl": "SlimeWitch.asm.framework.unityweb",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}

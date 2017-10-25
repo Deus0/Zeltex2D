@@ -1,0 +1,12 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "MrPenguin.data.unityweb",
+"asmCodeUrl": "MrPenguin.asm.code.unityweb",
+"asmMemoryUrl": "MrPenguin.asm.memory.unityweb",
+"asmFrameworkUrl": "MrPenguin.asm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"backgroundUrl": "MrPenguin.jpg",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#FFFFFF"
+}
