@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: a29cca3b1abf0164cbe795c937c88917, type: 2}
+  profile: {fileID: 11400000, guid: db1278a3b5b10ff4b953f939d75aaa08, type: 2}
 --- !u!20 &432425097
 Camera:
   m_ObjectHideFlags: 0

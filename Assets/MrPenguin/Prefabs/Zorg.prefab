@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4928205446569488}
   - component: {fileID: 212567723461532186}
   - component: {fileID: 114377600535393048}
+  - component: {fileID: 114873296244644268}
   m_Layer: 9
   m_Name: New Sprite
   m_TagString: Untagged
@@ -375,6 +376,18 @@ MonoBehaviour:
   BricksLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &114873296244644268
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1007541081871340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd5834b31031284d8502862d593a91e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeartSprite: {fileID: 21300000, guid: abd11bab94a72ed49af25a68ffd234d1, type: 3}
 --- !u!114 &114940444808095432
 MonoBehaviour:
   m_ObjectHideFlags: 1

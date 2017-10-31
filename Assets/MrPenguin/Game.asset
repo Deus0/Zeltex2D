@@ -109,10 +109,10 @@ MonoBehaviour:
         texture: {fileID: 0}
         intensity: 3
   colorGrading:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       tonemapping:
-        tonemapper: 0
+        tonemapper: 1
         neutralBlackIn: 0.02
         neutralWhiteIn: 10
         neutralBlackOut: 0
@@ -289,7 +289,7 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       colored: 1
-      intensity: 0.378
+      intensity: 0.541
       size: 0.65
       luminanceContribution: 0.8
   vignette:

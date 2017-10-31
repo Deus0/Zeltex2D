@@ -120,6 +120,21 @@ namespace Zeltex2D
                     }
                 }
             }
+
+            for (int x = 0; x < MyData.MapWidth; x++)
+            {
+                for (int y = 0; y < MyData.MapHeight; y++)
+                {
+                    if (MyData.Data[x, y] == 1)
+                    {
+                        float Chance = Random.Range(1, 100);
+                        if (Chance >= 90)
+                        {
+                            MyData.Data[x, y] = 3;
+                        }
+                    }
+                }
+            }
         }
 
         int GetDirectNeighborsCount(int gridX, int gridY)
@@ -208,6 +223,116 @@ namespace Zeltex2D
 
             return wallCount;
         }
+
+        #region MapRegions
+
+        bool IsInMapRange(int x, int y)
+        {
+            return x >= 0 && x < MyData.MapWidth && y >= 0 && y < MyData.MapHeight;
+        }
+
+        struct Coord
+        {
+            public int tileX;
+            public int tileY;
+
+            public Coord(int x, int y)
+            {
+                tileX = x;
+                tileY = y;
+            }
+        }
+
+        void ProcessMap()
+        {
+            List<List<Coord>> wallRegions = GetRegions(1);
+            int wallThresholdSize = 50;
+
+            foreach (List<Coord> wallRegion in wallRegions)
+            {
+                if (wallRegion.Count < wallThresholdSize)
+                {
+                    foreach (Coord tile in wallRegion)
+                    {
+                        MyData.Data[tile.tileX, tile.tileY] = 0;
+                    }
+                }
+            }
+
+            List<List<Coord>> roomRegions = GetRegions(0);
+            int roomThresholdSize = 50;
+
+            foreach (List<Coord> roomRegion in roomRegions)
+            {
+                if (roomRegion.Count < roomThresholdSize)
+                {
+                    foreach (Coord tile in roomRegion)
+                    {
+                        MyData.Data[tile.tileX, tile.tileY] = 1;
+                    }
+                }
+            }
+        }
+        List<List<Coord>> GetRegions(int tileType)
+        {
+            List<List<Coord>> regions = new List<List<Coord>>();
+            int[,] mapFlags = new int[MyData.MapWidth, MyData.MapHeight];
+
+            for (int x = 0; x < MyData.MapWidth; x++)
+            {
+                for (int y = 0; y < MyData.MapHeight; y++)
+                {
+                    if (mapFlags[x, y] == 0 && MyData.Data[x, y] == tileType)
+                    {
+                        List<Coord> newRegion = GetRegionTiles(x, y);
+                        regions.Add(newRegion);
+
+                        foreach (Coord tile in newRegion)
+                        {
+                            mapFlags[tile.tileX, tile.tileY] = 1;
+                        }
+                    }
+                }
+            }
+
+            return regions;
+        }
+
+        List<Coord> GetRegionTiles(int startX, int startY)
+        {
+            List<Coord> tiles = new List<Coord>();
+            int[,] mapFlags = new int[MyData.MapWidth, MyData.MapHeight];
+            int tileType = MyData.Data[startX, startY];
+
+            Queue<Coord> queue = new Queue<Coord>();
+            queue.Enqueue(new Coord(startX, startY));
+            mapFlags[startX, startY] = 1;
+
+            while (queue.Count > 0)
+            {
+                Coord tile = queue.Dequeue();
+                tiles.Add(tile);
+
+                for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
+                {
+                    for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
+                    {
+                        if (IsInMapRange(x, y) && (y == tile.tileY || x == tile.tileX))
+                        {
+                            if (mapFlags[x, y] == 0 && MyData.Data[x, y] == tileType)
+                            {
+                                mapFlags[x, y] = 1;
+                                queue.Enqueue(new Coord(x, y));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return tiles;
+        }
+
+        #endregion
     }
 
 }
