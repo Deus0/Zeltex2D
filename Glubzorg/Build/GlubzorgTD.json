@@ -1,0 +1,12 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "GlubzorgTD.data.unityweb",
+"asmCodeUrl": "GlubzorgTD.asm.code.unityweb",
+"asmMemoryUrl": "GlubzorgTD.asm.memory.unityweb",
+"asmFrameworkUrl": "GlubzorgTD.asm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"backgroundUrl": "GlubzorgTD.jpg",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#FFFFFF"
+}

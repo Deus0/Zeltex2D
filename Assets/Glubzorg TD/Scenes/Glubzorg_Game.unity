@@ -864,12 +864,6 @@ Prefab:
       propertyPath: MainCharacter
       value: 
       objectReference: {fileID: 2067250429}
-    - target: {fileID: 114965651454895730, guid: 77ea4d3265aa84f499ebaba75fc187ac,
-        type: 2}
-      propertyPath: LevelFaderPrefab
-      value: 
-      objectReference: {fileID: 1071639760556172, guid: adc68454aab40b440ad68b4577360e3b,
-        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 77ea4d3265aa84f499ebaba75fc187ac, type: 2}
   m_IsPrefabParent: 0

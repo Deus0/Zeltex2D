@@ -277,8 +277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ec5c1fda746f14a96e1406bd3cb0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainTheme: {fileID: 8300000, guid: 707815954753f274f9f6421a754eb85a, type: 3}
-  CombatTheme: {fileID: 8300000, guid: 36a58652404ac204aa9cc83ce2ac744c, type: 3}
+  MainTheme: {fileID: 8300000, guid: 0e975dd73d4763f43bfc605d5775ab84, type: 3}
+  CombatTheme: {fileID: 8300000, guid: 0e975dd73d4763f43bfc605d5775ab84, type: 3}
 --- !u!114 &114670136382156626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -304,5 +304,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49157bda08ee52649a88f1f81705b935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelFaderPrefab: {fileID: 1071639760556172, guid: e43335fb94373004ebd92ca0099d8cd6,
+  LevelFaderPrefab: {fileID: 1071639760556172, guid: adc68454aab40b440ad68b4577360e3b,
     type: 2}
