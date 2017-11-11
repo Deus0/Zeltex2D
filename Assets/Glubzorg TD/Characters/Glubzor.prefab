@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 61207701548616596}
   - component: {fileID: 114194664913072962}
   - component: {fileID: 114011488836421278}
+  - component: {fileID: 114055083891425750}
   m_Layer: 9
   m_Name: Glubzor
   m_TagString: Player
@@ -162,7 +163,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1631930057539586}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 1, z: 0}
+  m_LocalPosition: {x: 10.991143, y: -12.014998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4229478171389258}
@@ -191,7 +192,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1631930057539586}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -296,6 +297,19 @@ MonoBehaviour:
   lineOfSightPenetration: 0
   cellBased: 1
   antiFlicker: 0
+--- !u!114 &114055083891425750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1631930057539586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5782d3bace649024c81b33f18ad16b7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IconPrefab: {fileID: 1974568676893094, guid: 6927b4e3a3296414488086cfa3f1fec3, type: 2}
+  MyIcon: {fileID: 0}
 --- !u!114 &114074779668717512
 MonoBehaviour:
   m_ObjectHideFlags: 1

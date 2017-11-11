@@ -11,14 +11,21 @@ namespace Zeltex2D
     [ExecuteInEditMode, RequireComponent(typeof(MapData))]
     public class MinimapGenerator : MonoBehaviour
     {
-        public Image MapImage;
-        public Image FogImage;
+        public RawImage MapImage;
+        public RawImage FogImage;
         public List<Color> TileColours;
         private MapData Data;
 
         private void Awake()
         {
             Data = GetComponent<MapData>();
+            if (TileColours.Count == 0)
+            {
+                TileColours.Add(Color.black);
+                TileColours.Add(Color.magenta);
+                TileColours.Add(Color.green);
+                TileColours.Add(Color.cyan);
+            }
         }
 
         public void GenerateMap()
@@ -26,14 +33,18 @@ namespace Zeltex2D
             // Create new texture
             Texture2D NewTexture = new Texture2D(Data.MapWidth, Data.MapHeight, TextureFormat.ARGB32, false);
             NewTexture.filterMode = FilterMode.Point;
+            Color[] Pixels = NewTexture.GetPixels();
             for (int i = 0; i < Data.MapWidth; i++)
             {
                 for (int j = 0; j < Data.MapHeight; j++)
                 {
                     // set pixel
+                    Pixels[Mathf.FloorToInt(i + j * Data.MapWidth)] = TileColours[Data.GetTileType(i, j)];
                 }
             }
-
+            NewTexture.SetPixels(Pixels);
+            NewTexture.Apply();
+            MapImage.texture = NewTexture as Texture;
         }
 
         public void GenerateFog()

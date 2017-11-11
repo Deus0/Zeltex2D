@@ -139,6 +139,11 @@ namespace Zeltex2D
             OnGenerateMap.Invoke();
         }
 
+        public int GetTileType(int x, int y)
+        {
+            return Data[x, y];
+        }
+
         private void SetSeed()
         {
             string Seed = PlayerPrefs.GetString(SeedInput.SeedKey, SeedInput.SeedDefault);

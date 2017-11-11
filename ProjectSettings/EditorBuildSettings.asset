@@ -6,8 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MrPenguin/Scenes/MrPenguinMainMenu.unity
-    guid: acb5d3a264d000d40b1aebf5bd5e7860
-  - enabled: 1
-    path: Assets/MrPenguin/Scenes/GameScene.unity
-    guid: 94c7bef354a0e93499986451db95b1d3
+    path: Assets/Glubzorg TD/Scenes/Glubzorg_Game.unity
+    guid: d5d5482b3724bd34e911cd12e8582366

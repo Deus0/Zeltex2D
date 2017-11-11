@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10b0bf96b2f159042954d123e5138e92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NoiseFrequency: 0.02
-  NoiseAmplitude: 1
+  NoiseFrequency: 0.01
+  NoiseAmplitude: 0.3
   NoiseLimits: {x: 0, y: 1}
   NoiseMinimum: 0
   IsReduceBrightness: 0
@@ -62,10 +62,10 @@ MonoBehaviour:
   IsBrickShading: 0
   MyColor:
     serializedVersion: 2
-    rgba: 4278203486
+    rgba: 4278208641
   MySecondaryColor:
     serializedVersion: 2
-    rgba: 4278855486
+    rgba: 4280976232
   ThirdColor:
     serializedVersion: 2
     rgba: 4288544946
