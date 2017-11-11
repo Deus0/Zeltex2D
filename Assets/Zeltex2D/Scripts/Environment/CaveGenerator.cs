@@ -13,10 +13,17 @@ namespace Zeltex2D
         [Range(0, 100)]
         public int RandomFillPercent;
         public bool IsGenerateOnStart;
+        public MapOutlineType MyMapOutlineType = MapOutlineType.Rect;
         [Header("Actions")]
         public bool DoFillMap;
         public bool DoAlterSolids;
         private MapData MyData;
+
+        public enum MapOutlineType
+        {
+            Rect,
+            Circle
+        }
 
         void Awake()
         {
@@ -76,6 +83,14 @@ namespace Zeltex2D
             {
                 SmoothMap();
             }
+            if (MyMapOutlineType == MapOutlineType.Rect)
+            {
+                FillOutsideRect();
+            }
+            else
+            {
+                FillOutsideCircle();
+            }
         }
 
         void RandomFillMap()
@@ -91,13 +106,38 @@ namespace Zeltex2D
             {
                 for (int y = 0; y < MyData.MapHeight; y++)
                 {
+                    MyData.Data[x, y] = (pseudoRandom.Next(0, 100) < RandomFillPercent) ? 1 : 0;
+                }
+            }
+        }
+
+        public void FillOutsideRect()
+        {
+            for (int x = 0; x < MyData.MapWidth; x++)
+            {
+                for (int y = 0; y < MyData.MapHeight; y++)
+                {
                     if (x == 0 || x == MyData.MapWidth - 1 || y == 0 || y == MyData.MapHeight - 1)
                     {
                         MyData.Data[x, y] = 1;
                     }
-                    else
+                }
+            }
+        }
+
+        public void FillOutsideCircle()
+        {
+            float DistanceToMid = 0;
+            float MaxDistanceToMid = Mathf.Min(MyData.MapWidth, MyData.MapHeight) / 2 - 1;
+            Vector2 MidPoint = new Vector2(MyData.MapWidth / 2f, MyData.MapHeight / 2f);
+            for (int x = 0; x < MyData.MapWidth; x++)
+            {
+                for (int y = 0; y < MyData.MapHeight; y++)
+                {
+                    DistanceToMid = Vector2.Distance(new Vector2(x, y), MidPoint);
+                    if (DistanceToMid >= MaxDistanceToMid)
                     {
-                        MyData.Data[x, y] = (pseudoRandom.Next(0, 100) < RandomFillPercent) ? 1 : 0;
+                        MyData.Data[x, y] = 1;
                     }
                 }
             }

@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Zeltex2D
 {
+    /// <summary>
+    /// Holds the data for the map
+    /// </summary>
     [ExecuteInEditMode]
     public class MapData : MonoBehaviour
     {
@@ -25,6 +29,8 @@ namespace Zeltex2D
         public bool IsDebugMap;
         public bool DoFillWithTiles;
         public bool DoClearSpawned;
+        [Header("Events")]
+        public UnityEvent OnGenerateMap;
 
         private void Update()
         {
@@ -126,10 +132,14 @@ namespace Zeltex2D
                     }
                 }
             }
+            SetSeed();
             SpawnRandomEnemies();
+            SpawnPlayer();
+            SpawnLevelPortals();
+            OnGenerateMap.Invoke();
         }
 
-        public void SpawnRandomEnemies()
+        private void SetSeed()
         {
             string Seed = PlayerPrefs.GetString(SeedInput.SeedKey, SeedInput.SeedDefault);
             int SeedValue = 0;
@@ -138,6 +148,10 @@ namespace Zeltex2D
                 SeedValue += (int)Seed[i];
             }
             Random.InitState(SeedValue);
+        }
+
+        private void SpawnRandomEnemies()
+        {
             int SpawnPositionX = Random.Range(1, MapWidth - 1);
             int SpawnPositionY = Random.Range(1, MapHeight - 1);
             while (EnemiesToSpawn >= 1)
@@ -153,22 +167,12 @@ namespace Zeltex2D
                     SpawnPositionY = Random.Range(1, MapHeight - 1);
                 }
             }
-            EnemiesToSpawn = 1;
-            while (EnemiesToSpawn >= 1)
-            {
-                if (IsNonSolid(SpawnPositionX, SpawnPositionY))
-                {
-                    Vector3 NewPosition = new Vector3(-MapWidth / 2 + SpawnPositionX, -MapHeight / 2 + SpawnPositionY, 0);
-                    Player.transform.localPosition = NewPosition;
-                    EnemiesToSpawn--;
-                }
-                else
-                {
-                    SpawnPositionX = Random.Range(1, MapWidth - 1);
-                    SpawnPositionY = Random.Range(1, MapHeight - 1);
-                }
-            }
+        }
 
+        private void SpawnLevelPortals()
+        {
+            int SpawnPositionX = Random.Range(1, MapWidth - 1);
+            int SpawnPositionY = Random.Range(1, MapHeight - 1);
             EnemiesToSpawn = 1;
             while (EnemiesToSpawn >= 1)
             {
@@ -182,6 +186,34 @@ namespace Zeltex2D
                 {
                     SpawnPositionX = Random.Range(1, MapWidth - 1);
                     SpawnPositionY = Random.Range(1, MapHeight - 1);
+                }
+            }
+        }
+
+        private void SpawnPlayer()
+        {
+            if (Player == null)
+            {
+                // Spawn the player!
+            }
+            if (Player != null)
+            {
+                int SpawnPositionX = Random.Range(1, MapWidth - 1);
+                int SpawnPositionY = Random.Range(1, MapHeight - 1);
+                EnemiesToSpawn = 1;
+                while (EnemiesToSpawn >= 1)
+                {
+                    if (IsNonSolid(SpawnPositionX, SpawnPositionY))
+                    {
+                        Vector3 NewPosition = new Vector3(-MapWidth / 2 + SpawnPositionX, -MapHeight / 2 + SpawnPositionY, 0);
+                        Player.transform.localPosition = NewPosition;
+                        EnemiesToSpawn--;
+                    }
+                    else
+                    {
+                        SpawnPositionX = Random.Range(1, MapWidth - 1);
+                        SpawnPositionY = Random.Range(1, MapHeight - 1);
+                    }
                 }
             }
         }

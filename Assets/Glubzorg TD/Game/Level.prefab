@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1413881482416474}
+  m_IsPrefabParent: 1
+--- !u!1 &1413881482416474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4140517131123814}
+  - component: {fileID: 114387912926002842}
+  - component: {fileID: 114958957837594924}
+  m_Layer: 0
+  m_Name: Level
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4140517131123814
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1413881482416474}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114387912926002842
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1413881482416474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a948fa015ebfd35469ef6319c35e5d67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapWidth: 64
+  MapHeight: 64
+  EnemiesToSpawn: 28
+  TilePrefabs:
+  - {fileID: 1000709833062238, guid: 1746a5c2d57346245885e025a9759acd, type: 2}
+  - {fileID: 1011078413255826, guid: ea9f8cb5ba8c65b4ea96e14ac0b26350, type: 2}
+  - {fileID: 1011078413255826, guid: f4b8cdcdf244c7b4aab86bba4ba42a91, type: 2}
+  - {fileID: 1011078413255826, guid: b7928e8adc446dd45923b2a511535665, type: 2}
+  CharacterPrefab: {fileID: 1702622588558628, guid: 6c62ed88c6917e24f9f3f5ec04202796,
+    type: 2}
+  LevelProgressorPrefab: {fileID: 1435836101278468, guid: 797728aab5faa3d4e99f3e34301d7ccd,
+    type: 2}
+  Player: {fileID: 0}
+  SpawnedCharacters: []
+  LevelProgressor: {fileID: 0}
+  SpawnedTiles: []
+  IsDebugMap: 0
+  DoFillWithTiles: 0
+  DoClearSpawned: 0
+--- !u!114 &114958957837594924
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1413881482416474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb5714a2204c8464e821377e4041c1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Seed: -282
+  IsRandomSeed: 0
+  RandomFillPercent: 46
+  IsGenerateOnStart: 1
+  DoFillMap: 0
+  DoAlterSolids: 0

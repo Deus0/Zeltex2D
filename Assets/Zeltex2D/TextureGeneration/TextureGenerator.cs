@@ -9,6 +9,7 @@ namespace Zeltex.Generators
     ///      - Rectangular Voroni - keep expanding rectangle sides until no white left
     ///      - Grass - Something more similar
     ///      - Cobble stone - chose colours too - noise onto the voroni
+    /// Put Texture Algorithms in sub components!
     /// </summary>
     [ExecuteInEditMode]
     public class TextureGenerator : MonoBehaviour
@@ -31,6 +32,13 @@ namespace Zeltex.Generators
         public Vector2 NoiseOffset;
         [Header("Actions")]
         public bool DoGenerateNoise;
+        public GenerateType DoGenerateType = GenerateType.Noise;
+
+        public enum GenerateType
+        {
+            Noise,
+            Bricks
+        }
 
         public bool IsGenerateOnStart;
         private static int IsPink = -1;
@@ -62,7 +70,14 @@ namespace Zeltex.Generators
                 Graphics.CopyTexture(MySprite.sprite.texture, NewTexture);
                 NoiseOffset.x = transform.position.x * MySprite.sprite.texture.width;
                 NoiseOffset.y = transform.position.y * MySprite.sprite.texture.height;
-                Noise(NewTexture);
+                if (DoGenerateType == GenerateType.Noise)
+                {
+                    Noise(NewTexture);
+                }
+                else if (DoGenerateType == GenerateType.Bricks)
+                {
+                    Bricks(NewTexture);
+                }
                 Sprite TheSprite = Sprite.Create(NewTexture, MySprite.sprite.textureRect, new Vector2(0.5f, 0.5f), 32, 4, SpriteMeshType.FullRect, Vector4.zero);
                 MySprite.sprite = TheSprite;
             }

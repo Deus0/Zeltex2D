@@ -11,32 +11,38 @@ namespace Zeltex2D
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            //Debug.LogError(other.gameObject.name + " has entered " + transform.parent.name);
-            Character2D TriggeredCharacter = other.gameObject.GetComponent<Character2D>();
-            if (TriggeredCharacter)
+            if (TargetCharacter)
             {
-                TargetCharacter.SelectCharacter(TriggeredCharacter);
-                return;
-            }
-            Item TriggeredItem = other.gameObject.GetComponent<Item>();
-            if (TriggeredItem)
-            {
-                TargetCharacter.SelectItem(TriggeredItem);
+                //Debug.LogError(other.gameObject.name + " has entered " + transform.parent.name);
+                Character2D TriggeredCharacter = other.gameObject.GetComponent<Character2D>();
+                if (TriggeredCharacter)
+                {
+                    TargetCharacter.SelectCharacter(TriggeredCharacter);
+                    return;
+                }
+                Item TriggeredItem = other.gameObject.GetComponent<Item>();
+                if (TriggeredItem)
+                {
+                    TargetCharacter.SelectItem(TriggeredItem);
+                }
             }
         }
 
         void OnTriggerExit2D(Collider2D other)
         {
-            Character2D TriggeredCharacter = other.gameObject.GetComponent<Character2D>();
-            if (TriggeredCharacter)
+            if (TargetCharacter)
             {
-                TargetCharacter.DeSelectCharacter(TriggeredCharacter);
-                return;
-            }
-            Item TriggeredItem = other.gameObject.GetComponent<Item>();
-            if (TriggeredItem)
-            {
-                TargetCharacter.DeSelectItem(TriggeredItem);
+                Character2D TriggeredCharacter = other.gameObject.GetComponent<Character2D>();
+                if (TriggeredCharacter)
+                {
+                    TargetCharacter.DeSelectCharacter(TriggeredCharacter);
+                    return;
+                }
+                Item TriggeredItem = other.gameObject.GetComponent<Item>();
+                if (TriggeredItem)
+                {
+                    TargetCharacter.DeSelectItem(TriggeredItem);
+                }
             }
         }
     }

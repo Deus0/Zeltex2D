@@ -9,32 +9,32 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1011078413255826}
+  m_RootGameObject: {fileID: 1660615360420596}
   m_IsPrefabParent: 1
---- !u!1 &1011078413255826
+--- !u!1 &1660615360420596
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4286902773687942}
-  - component: {fileID: 212269305440972980}
-  - component: {fileID: 61695848616929964}
-  - component: {fileID: 114749234698806256}
+  - component: {fileID: 4397840371606892}
+  - component: {fileID: 212652992229161038}
+  - component: {fileID: 61463623891157724}
+  - component: {fileID: 114523559265230254}
   m_Layer: 0
-  m_Name: Bricks
+  m_Name: Glubrock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4286902773687942
+--- !u!4 &4397840371606892
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1011078413255826}
+  m_GameObject: {fileID: 1660615360420596}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 9, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -42,12 +42,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61695848616929964
+--- !u!61 &61463623891157724
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1011078413255826}
+  m_GameObject: {fileID: 1660615360420596}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -67,12 +67,12 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &114749234698806256
+--- !u!114 &114523559265230254
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1011078413255826}
+  m_GameObject: {fileID: 1660615360420596}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10b0bf96b2f159042954d123e5138e92, type: 3}
@@ -88,10 +88,10 @@ MonoBehaviour:
   IsBrickShading: 0
   MyColor:
     serializedVersion: 2
-    rgba: 4278203486
+    rgba: 4278851396
   MySecondaryColor:
     serializedVersion: 2
-    rgba: 4278855486
+    rgba: 4278805052
   ThirdColor:
     serializedVersion: 2
     rgba: 4288544946
@@ -100,12 +100,12 @@ MonoBehaviour:
   DoGenerateType: 1
   IsGenerateOnStart: 1
   IsNoiseCutoff: 0
---- !u!212 &212269305440972980
+--- !u!212 &212652992229161038
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1011078413255826}
+  m_GameObject: {fileID: 1660615360420596}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0

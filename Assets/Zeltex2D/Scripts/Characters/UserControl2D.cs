@@ -33,7 +33,7 @@ namespace Zeltex2D
                 new Vector3(transform.position.x, transform.position.y, MyCamera.transform.position.z);
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             // Read the inputs.
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -47,7 +47,7 @@ namespace Zeltex2D
             MyCharacter.Move(h, v);
         }
 
-        void Update()
+        protected virtual void Update()
         {
             if (MyCharacter.CanMove)
             {
