@@ -11,11 +11,13 @@ namespace Zeltex2D
     [ExecuteInEditMode]
     public class MapData : MonoBehaviour
     {
+        public static MapData Instance;
         [HideInInspector]
         public int[,] Data;
         public int MapWidth = 32;
         public int MapHeight = 32;
         public int EnemiesToSpawn = 6;
+        public bool IsSpawnLevelPortals;
         [Header("Instantiation")]
         public List<GameObject> TilePrefabs = new List<GameObject>();
         public GameObject CharacterPrefab;
@@ -32,6 +34,11 @@ namespace Zeltex2D
         [Header("Events")]
         public UnityEvent OnGenerateMap;
 
+        private void Awake()
+        {
+            Instance = this;
+        }
+
         private void Update()
         {
             if (DoFillWithTiles)
@@ -43,6 +50,33 @@ namespace Zeltex2D
             {
                 DoClearSpawned = false;
                 ClearSpawned();
+            }
+        }
+
+        public Character2D GetClosestWithTag(string MyTag, Vector3 MyPosition, float DefaultSmallest = 10000)
+        {
+            int FoundIndex = -1;
+            float SmallestDistance = DefaultSmallest;
+            float ThisDistance = 0;
+            for (int i = 0; i < SpawnedCharacters.Count; i++)
+            {
+                if (SpawnedCharacters[i] && SpawnedCharacters[i].tag == MyTag)
+                {
+                    ThisDistance = Vector3.Distance(MyPosition, SpawnedCharacters[i].transform.position);
+                    if (SmallestDistance > ThisDistance)
+                    {
+                        FoundIndex = i;
+                        SmallestDistance = ThisDistance;
+                    }
+                }
+            }
+            if (FoundIndex == -1)
+            {
+                return null;
+            }
+            else
+            {
+                return SpawnedCharacters[FoundIndex].GetComponent<Character2D>();
             }
         }
 
@@ -135,7 +169,10 @@ namespace Zeltex2D
             SetSeed();
             SpawnRandomEnemies();
             SpawnPlayer();
-            SpawnLevelPortals();
+            if (IsSpawnLevelPortals)
+            {
+                SpawnLevelPortals();
+            }
             OnGenerateMap.Invoke();
         }
 
@@ -195,6 +232,7 @@ namespace Zeltex2D
             }
         }
 
+        public bool IsSpawnPlayerInMiddle;
         private void SpawnPlayer()
         {
             if (Player == null)
@@ -203,8 +241,9 @@ namespace Zeltex2D
             }
             if (Player != null)
             {
-                int SpawnPositionX = Random.Range(1, MapWidth - 1);
-                int SpawnPositionY = Random.Range(1, MapHeight - 1);
+                int TryCount = 0;
+                int SpawnPositionX = Random.Range(1 + ((MapWidth - 1) / 2) - TryCount, (MapWidth - 1) - ((MapWidth - 1) / 2) + TryCount);
+                int SpawnPositionY = Random.Range(1 + ((MapHeight - 1) / 2) - TryCount, (MapHeight - 1) - ((MapHeight - 1) / 2) + TryCount);
                 EnemiesToSpawn = 1;
                 while (EnemiesToSpawn >= 1)
                 {
@@ -216,9 +255,10 @@ namespace Zeltex2D
                     }
                     else
                     {
-                        SpawnPositionX = Random.Range(1, MapWidth - 1);
-                        SpawnPositionY = Random.Range(1, MapHeight - 1);
+                        SpawnPositionX = Random.Range(1 + ((MapWidth - 1) / 2) - TryCount, (MapWidth - 1) - ((MapWidth - 1) / 2) + TryCount);
+                        SpawnPositionY = Random.Range(1 + ((MapHeight - 1) / 2) - TryCount, (MapHeight - 1) - ((MapHeight - 1) / 2) + TryCount);
                     }
+                    TryCount++;
                 }
             }
         }

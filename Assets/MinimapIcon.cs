@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Zeltex2D
 {
@@ -9,9 +10,11 @@ namespace Zeltex2D
         public Transform Target;
         public MapData Map;
         private Vector3 LastPosition;
+        private RawImage MyImage;
 
         private void Start()
         {
+            MyImage = GetComponent<RawImage>();
             if (Map == null)
             {
                 Debug.LogError(name + " Has no assigned Map");
@@ -48,6 +51,14 @@ namespace Zeltex2D
                         (LastPosition.x / MapSize.x) * RectSize.x,
                         (LastPosition.y / MapSize.y) * RectSize.y,
                         0);
+        }
+
+        public void SetVisibility(bool IsVisible)
+        {
+            if (MyImage)
+            {
+                MyImage.enabled = IsVisible;
+            }
         }
     }
 

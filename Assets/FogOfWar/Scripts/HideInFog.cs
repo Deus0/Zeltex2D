@@ -14,6 +14,7 @@ namespace FoW
         Renderer _renderer;
         Graphic _graphic;
         Canvas _canvas;
+        protected bool visible;
 
         void Start()
         {
@@ -25,8 +26,12 @@ namespace FoW
 
         void Update()
         {
-            bool visible = !FogOfWar.current.IsInFog(_transform.position + OffsetPosition, minFogStrength);
+            visible = !FogOfWar.current.IsInFog(_transform.position + OffsetPosition, minFogStrength);
+            OnVisibleChanged();
+        }
 
+        public virtual void OnVisibleChanged()
+        {
             if (_renderer != null)
                 _renderer.enabled = visible;
             if (_graphic != null)

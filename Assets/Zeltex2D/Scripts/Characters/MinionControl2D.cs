@@ -68,7 +68,7 @@ namespace Zeltex2D
             }
             else
             {
-                Attack();
+                AttackClosest();
             }
         }
 
@@ -84,7 +84,20 @@ namespace Zeltex2D
             MyBehaviour = MinionBehaviour.SeekTarget;
         }
 
-        public void Attack()
+        public bool IsAttacking()
+        {
+            return MyBehaviour == MinionBehaviour.Attack;
+        }
+
+        public void Attack(Transform NewTarget)
+        {
+            MinimumDistanceToTarget = 0f;
+            BeforeAttackBehaviour = MyBehaviour;
+            MyBehaviour = MinionBehaviour.Attack;
+            AttackTransform = NewTarget;
+        }
+
+        public void AttackClosest()
         {
             if (MyBehaviour != MinionBehaviour.Attack)
             {
@@ -157,7 +170,7 @@ namespace Zeltex2D
                 if (Time.time - LastSeekedTarget >= 2f)
                 {
                     LastSeekedTarget = Time.time;
-                    Attack();
+                    AttackClosest();
                 }
             }
             else if (MyBehaviour == MinionBehaviour.Idle)
@@ -211,16 +224,19 @@ namespace Zeltex2D
 
         private float GetEnemyRadius(Transform EnemyTransform)
         {
-            CircleCollider2D EnemyCollider = EnemyTransform.GetComponent<CircleCollider2D>();
-            if (EnemyCollider)
+            if (EnemyTransform)
             {
-                return EnemyCollider.radius * EnemyTransform.transform.localScale.x;
-            }
+                CircleCollider2D EnemyCollider = EnemyTransform.GetComponent<CircleCollider2D>();
+                if (EnemyCollider)
+                {
+                    return EnemyCollider.radius * EnemyTransform.transform.localScale.x;
+                }
 
-            BoxCollider2D EnemyBoxCollider = EnemyTransform.GetComponent<BoxCollider2D>();
-            if (EnemyBoxCollider)
-            {
-                return ((EnemyBoxCollider.bounds.size.x + EnemyBoxCollider.bounds.size.y) / 2f) * EnemyTransform.transform.localScale.x;
+                BoxCollider2D EnemyBoxCollider = EnemyTransform.GetComponent<BoxCollider2D>();
+                if (EnemyBoxCollider)
+                {
+                    return ((EnemyBoxCollider.bounds.size.x + EnemyBoxCollider.bounds.size.y) / 2f) * EnemyTransform.transform.localScale.x;
+                }
             }
             return 0;
         }

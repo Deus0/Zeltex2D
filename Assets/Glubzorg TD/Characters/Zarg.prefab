@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 4928205446569488}
   - component: {fileID: 212567723461532186}
   - component: {fileID: 114377600535393048}
-  - component: {fileID: 114873296244644268}
+  - component: {fileID: 114169988986024970}
+  - component: {fileID: 114742587517730752}
   m_Layer: 9
   m_Name: New Sprite
   m_TagString: Untagged
@@ -80,9 +81,11 @@ GameObject:
   - component: {fileID: 114514532689771892}
   - component: {fileID: 114838259001031654}
   - component: {fileID: 58808321057536806}
+  - component: {fileID: 114606683282769718}
+  - component: {fileID: 114475835113859922}
   m_Layer: 9
   m_Name: Zarg
-  m_TagString: Player
+  m_TagString: Minion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,7 +132,7 @@ Transform:
   m_GameObject: {fileID: 1007541081871340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_Children: []
   m_Father: {fileID: 4641425923086364}
   m_RootOrder: 0
@@ -168,7 +171,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.15
 --- !u!95 &95417119238384176
 Animator:
   serializedVersion: 3
@@ -215,6 +218,39 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114169988986024970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1007541081871340}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b0bf96b2f159042954d123e5138e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseFrequency: 0.02
+  NoiseAmplitude: 1
+  NoiseLimits: {x: 0, y: 1}
+  NoiseMinimum: 0
+  IsReduceBrightness: 0
+  IsVoroniLines: 0
+  ReductionRate: 0.9
+  IsBrickShading: 0
+  MyColor:
+    serializedVersion: 2
+    rgba: 4278851396
+  MySecondaryColor:
+    serializedVersion: 2
+    rgba: 4278805052
+  ThirdColor:
+    serializedVersion: 2
+    rgba: 4288544946
+  NoiseOffset: {x: 0, y: 0}
+  DoGenerateNoise: 0
+  DoGenerateType: 1
+  IsGenerateOnStart: 1
+  IsNoiseCutoff: 0
 --- !u!114 &114262866789792628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -276,6 +312,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114475835113859922
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1702622588558628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fe14a591fda7a542be1e47e5b870144, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114514532689771892
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -290,12 +337,18 @@ MonoBehaviour:
   MyHealthBar: {fileID: 114637024721872672}
   MyDialogue: {fileID: 0}
   MyOutline: {fileID: 0}
-  Health: 4
+  Health: 2
   MaxSpeed: 1
   HealthRegenRate: 0
-  IsShowHealthBar: 0
+  IsDestroyOnZeroHealth: 1
+  IsShowHealthBar: 1
   CanMove: 1
   Direction: 0
+  OnKilledCharacterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114529596192529478
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -315,6 +368,19 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!114 &114606683282769718
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1702622588558628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5782d3bace649024c81b33f18ad16b7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IconPrefab: {fileID: 1974568676893094, guid: 4b2c07276fc92b244aa5104cb51612e6, type: 2}
+  MyIcon: {fileID: 0}
 --- !u!114 &114637024721872672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -331,6 +397,21 @@ MonoBehaviour:
   MyBars: []
   DoClearBars: 0
   DoSpawnBars: 0
+--- !u!114 &114742587517730752
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1007541081871340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea01b58567abed41a61f031f1e37e5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minFogStrength: 0.2
+  OffsetPosition: {x: -0.5, y: -0.5, z: 0}
+  MapIcon: {fileID: 114606683282769718}
+  MyHealthBar: {fileID: 114637024721872672}
 --- !u!114 &114835252389798130
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -376,18 +457,6 @@ MonoBehaviour:
   BricksLayer:
     serializedVersion: 2
     m_Bits: 256
---- !u!114 &114873296244644268
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1007541081871340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cd5834b31031284d8502862d593a91e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HeartSprite: {fileID: 21300000, guid: abd11bab94a72ed49af25a68ffd234d1, type: 3}
 --- !u!114 &114940444808095432
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -525,7 +594,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1959173986471212}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.529, z: 0}
+  m_LocalPosition: {x: 0, y: 0.34, z: 0}
   m_LocalScale: {x: 0.005, y: 0.005, z: 1}
   m_Children:
   - {fileID: 224966895077379146}
@@ -534,7 +603,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.529}
+  m_AnchoredPosition: {x: 0, y: 0.34}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224966895077379146

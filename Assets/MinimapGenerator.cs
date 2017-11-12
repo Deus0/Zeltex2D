@@ -34,12 +34,21 @@ namespace Zeltex2D
             Texture2D NewTexture = new Texture2D(Data.MapWidth, Data.MapHeight, TextureFormat.ARGB32, false);
             NewTexture.filterMode = FilterMode.Point;
             Color[] Pixels = NewTexture.GetPixels();
+            int TileIndex = 0;
             for (int i = 0; i < Data.MapWidth; i++)
             {
                 for (int j = 0; j < Data.MapHeight; j++)
                 {
                     // set pixel
-                    Pixels[Mathf.FloorToInt(i + j * Data.MapWidth)] = TileColours[Data.GetTileType(i, j)];
+                    TileIndex = Data.GetTileType(i, j);
+                    if (TileIndex >= 0 && TileIndex < TileColours.Count)
+                    {
+                        Pixels[Mathf.FloorToInt(i + j * Data.MapWidth)] = TileColours[TileIndex];
+                    }
+                    else
+                    {
+                        Pixels[Mathf.FloorToInt(i + j * Data.MapWidth)] = Color.red;
+                    }
                 }
             }
             NewTexture.SetPixels(Pixels);

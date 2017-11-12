@@ -15,7 +15,7 @@ PlayerSettings:
   productName: MrPenguin
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.10272491, g: 0.18382353, b: 0.10272491, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0, g: 0.10196079, b: 0.08235294, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
@@ -46,7 +46,7 @@ PlayerSettings:
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
   defaultScreenWidthWeb: 960
-  defaultScreenHeightWeb: 600
+  defaultScreenHeightWeb: 540
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 0
   m_MTRendering: 1
@@ -252,7 +252,9 @@ PlayerSettings:
   m_BuildTargetEnableVuforiaSettings: []
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
-  m_TemplateCustomTags: {}
+  m_TemplateCustomTags:
+    BACKGROUND: 
+    SCALE_TO_FIT: 
   mobileMTRendering:
     Android: 1
     iPhone: 1
@@ -506,10 +508,8 @@ PlayerSettings:
   psp2InfoBarColor: 0
   psp2ScriptOptimizationLevel: 0
   psmSplashimage: {fileID: 0}
-  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: 441b1ea4683f99e4b9d27e6e6c982b68,
-    type: 3}
-  splashScreenBackgroundSourcePortrait: {fileID: 21300000, guid: 441b1ea4683f99e4b9d27e6e6c982b68,
-    type: 3}
+  splashScreenBackgroundSourceLandscape: {fileID: 0}
+  splashScreenBackgroundSourcePortrait: {fileID: 0}
   spritePackerPolicy: 
   webGLMemorySize: 256
   webGLExceptionSupport: 1
@@ -518,7 +518,7 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
-  webGLTemplate: APPLICATION:Default
+  webGLTemplate: PROJECT:BetterMinimal
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLUseWasm: 0

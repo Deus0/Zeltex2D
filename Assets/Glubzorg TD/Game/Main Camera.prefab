@@ -65,7 +65,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.8
+  orthographic size: 4.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  damping: 0.2
-  lookAheadFactor: 3
+  damping: 0.1
+  lookAheadFactor: 0
   lookAheadReturnSpeed: 0.5
   lookAheadMoveThreshold: 0.1
   CameraPositionAddition: {x: 0, y: 0, z: 0}

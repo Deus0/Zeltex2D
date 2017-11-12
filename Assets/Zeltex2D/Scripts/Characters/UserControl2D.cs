@@ -98,7 +98,7 @@ namespace Zeltex2D
                             }
                             else if (MySkillbar.CurrentTargetedSkill == 1)
                             {
-                                Slime.GetComponent<MinionControl2D>().Attack();
+                                Slime.GetComponent<MinionControl2D>().AttackClosest();
                             }
                             else if (MySkillbar.CurrentTargetedSkill == 2)
                             {

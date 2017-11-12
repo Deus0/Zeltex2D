@@ -10,7 +10,8 @@ namespace Zeltex2D
     public class MinimapIconSpawner : MonoBehaviour
     {
         public GameObject IconPrefab;
-        private MinimapIcon MyIcon;
+        [HideInInspector]
+        public MinimapIcon MyIcon;
         private static string ParentName = "MinMapParent";
 
         private void Awake()
@@ -22,7 +23,7 @@ namespace Zeltex2D
             {
                 MyIcon.Map = GameObject.Find("Level").GetComponent<MapData>();
                 MyIcon.Target = transform;
-                MyIcon.transform.SetSiblingIndex(2);
+                MyIcon.transform.SetSiblingIndex(1);
             }
             else
             {
@@ -32,7 +33,10 @@ namespace Zeltex2D
 
         private void OnDestroy()
         {
-            DestroyImmediate(MyIcon.gameObject);
+            if (MyIcon)
+            {
+                Destroy(MyIcon.gameObject);
+            }
         }
     }
 

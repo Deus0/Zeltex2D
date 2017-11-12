@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114674324988395478}
   - component: {fileID: 114621373642239084}
   - component: {fileID: 114351433468614222}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: HealthBarElement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 114744201071145814}
   - component: {fileID: 114086455960262850}
   - component: {fileID: 114216573167462912}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: MrPenguinLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 114514464741940002}
   - component: {fileID: 114892448223518058}
   - component: {fileID: 114813558349259346}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 114679554740680282}
   - component: {fileID: 114430277846741038}
   - component: {fileID: 114715395039710864}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 4527802442736014}
   - component: {fileID: 114074779668717512}
   - component: {fileID: 61856910933058090}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,13 +116,14 @@ GameObject:
   - component: {fileID: 4327784795555438}
   - component: {fileID: 95477821450872318}
   - component: {fileID: 50599660791198458}
-  - component: {fileID: 61207701548616596}
+  - component: {fileID: 58732955628097504}
   - component: {fileID: 114194664913072962}
   - component: {fileID: 114011488836421278}
   - component: {fileID: 114055083891425750}
-  m_Layer: 9
+  - component: {fileID: 114860978786744792}
+  m_Layer: 11
   m_Name: Glubzor
-  m_TagString: Player
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,7 +137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4229478171389258}
   - component: {fileID: 212788187547562866}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: CharacterSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +164,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1631930057539586}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.991143, y: -12.014998, z: 0}
+  m_LocalPosition: {x: -5, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4229478171389258}
@@ -205,8 +206,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!61 &61207701548616596
-BoxCollider2D:
+--- !u!58 &58732955628097504
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -218,18 +219,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Radius: 0.3
 --- !u!61 &61856910933058090
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -293,7 +284,7 @@ MonoBehaviour:
   rotateToForward: 0
   lineOfSightMask:
     serializedVersion: 2
-    m_Bits: 4294966783
+    m_Bits: 4294963711
   lineOfSightPenetration: 0
   cellBased: 1
   antiFlicker: 0
@@ -350,12 +341,18 @@ MonoBehaviour:
   MyHealthBar: {fileID: 114430277846741038}
   MyDialogue: {fileID: 0}
   MyOutline: {fileID: 0}
-  Health: 8
+  Health: 6
   MaxSpeed: 3
   HealthRegenRate: 0
-  IsShowHealthBar: 0
+  IsDestroyOnZeroHealth: 1
+  IsShowHealthBar: 1
   CanMove: 1
   Direction: 0
+  OnKilledCharacterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114216573167462912
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -602,6 +599,23 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!114 &114860978786744792
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1631930057539586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0f831d816bdc34ba04f7ac5fa564b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletPrefab: {fileID: 1182878632159324, guid: db32842f369dadd4696b8765ba94769a,
+    type: 2}
+  FireRate: 1
+  FireForce: 80
+  DoShoot: 0
+  FireRange: 3
 --- !u!114 &114892448223518058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -658,8 +672,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 441b1ea4683f99e4b9d27e6e6c982b68, type: 3}
-  m_Color: {r: 0.8176471, g: 0.5735294, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 2e06b4cd1e42cb8468243041c2533eaf, type: 3}
+  m_Color: {r: 0.85223126, g: 0.6544118, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

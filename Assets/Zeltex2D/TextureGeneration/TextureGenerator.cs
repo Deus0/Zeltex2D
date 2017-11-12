@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace Zeltex.Generators
+namespace Zeltex2D.Generators
 {
     /// <summary>
     /// Generates textures.

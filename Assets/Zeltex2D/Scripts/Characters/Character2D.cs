@@ -19,8 +19,6 @@ namespace Zeltex2D
     /// </summary>
     public class Character2D : MonoBehaviour
     {
-        public static bool IsDestroyOnZeroHealth = false;
-
         [Header("Links")]
         public HealthBar MyHealthBar;
         public DialogueAnimator MyDialogue;
@@ -35,6 +33,7 @@ namespace Zeltex2D
         public float HealthRegenRate = 4f;
         private int MaxHealth = 5;
         [Header("Options")]
+        public bool IsDestroyOnZeroHealth = true;
         public bool IsShowHealthBar = true;
 
         [HideInInspector]
@@ -44,6 +43,8 @@ namespace Zeltex2D
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
         private float MoveChangeThreshold = 0.5f;
         private float LastTakenHit;
+        private bool IsDying;
+        private int KillCount = 0;
 
         private void Awake()
         {
@@ -52,6 +53,7 @@ namespace Zeltex2D
             MyControl = GetComponent<MinionControl2D>();
             if (MyHealthBar && IsShowHealthBar)
             {
+                MyHealthBar.gameObject.SetActive(true);
                 MyHealthBar.SetHealthBars(Health);
             }
             MaxHealth = Health;
@@ -124,11 +126,25 @@ namespace Zeltex2D
             {
                 MyControl.OnHit(MyCharacter);
             }
-            if (Health == 0 && IsDestroyOnZeroHealth)
+            if (Health == 0 && IsDestroyOnZeroHealth && !IsDying)
             {
-                Destroy(gameObject);
+                IsDying = true;
+                MapData.Instance.SpawnedCharacters.Remove(gameObject);
+                MyHealthBar.SetVisibility(false);
+                SetMovement(false);
+                ShrinkDeath MyDeath = gameObject.AddComponent<ShrinkDeath>();
+                MyDeath.SetDeathTime(0.4f);
+                MyCharacter.OnKilledCharacter(this);
             }
         }
+
+        public void OnKilledCharacter(Character2D DeadCharacter)
+        {
+            KillCount++;
+            OnKilledCharacterEvent.Invoke();
+        }
+
+        public UnityEngine.Events.UnityEvent OnKilledCharacterEvent;
 
         public void Glow()
         {
