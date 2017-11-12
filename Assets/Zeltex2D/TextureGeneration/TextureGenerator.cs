@@ -33,11 +33,13 @@ namespace Zeltex2D.Generators
         [Header("Actions")]
         public bool DoGenerateNoise;
         public GenerateType DoGenerateType = GenerateType.Noise;
+        public float Percentage = 1f;
 
         public enum GenerateType
         {
             Noise,
-            Bricks
+            Bricks,
+            AddNoise
         }
 
         public bool IsGenerateOnStart;
@@ -77,6 +79,13 @@ namespace Zeltex2D.Generators
                 else if (DoGenerateType == GenerateType.Bricks)
                 {
                     Bricks(NewTexture);
+                }
+                else if (DoGenerateType == GenerateType.AddNoise)
+                {
+                    Percentage = Random.Range(0.2f, 0.75f);
+                    SetPrimaryColor(new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(155, 255)));
+                    SetSecondaryColor(new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(155, 255)));
+                    AddNoise(NewTexture, Percentage);
                 }
                 Sprite TheSprite = Sprite.Create(NewTexture, MySprite.sprite.textureRect, new Vector2(0.5f, 0.5f), 32, 4, SpriteMeshType.FullRect, Vector4.zero);
                 MySprite.sprite = TheSprite;
@@ -467,6 +476,63 @@ namespace Zeltex2D.Generators
                     }
                     else
                     {
+                        PixelColors[PixelIndex] = new Color32(
+                            (byte)RedValue,
+                            (byte)GreenValue,
+                            (byte)BlueValue,
+                            255);
+                    }
+                }
+            }
+            SetPixels(MyTexture, PixelColors);
+        }
+
+        /// <summary>
+        /// Generates basic noise as values between primary and secondary colours
+        /// </summary>
+        public void AddNoise(Texture2D MyTexture, float Percentage = 1f)
+        {
+            Color32[] PixelColors = MyTexture.GetPixels32(0);
+
+            for (int i = 0; i < MyTexture.width; i++)
+            {
+                for (int j = 0; j < MyTexture.height; j++)
+                {
+                    int PixelIndex = GetPixelIndex(i, j, MyTexture.width);
+                    Color32 PixelColor = PixelColors[PixelIndex];
+                    if (PixelColor.a != 0)
+                    {
+                        //float PositionX = Mathf.Abs(i - Random.Range(MyTexture.width / 2f - 4, MyTexture.width / 2f + 4));
+                        //float PositionY = Mathf.Abs(j - Random.Range(MyTexture.width / 2f - 4, MyTexture.width / 2f + 4));
+
+                        //float NoiseValue = NoiseAmplitude * Mathf.PerlinNoise((NoiseOffset.x + i) * NoiseFrequency, (NoiseOffset.y + j) * NoiseFrequency);
+
+                        float NoiseValue = NoiseAmplitude * SimplexNoise.Noise((NoiseOffset.x + i) * NoiseFrequency, (NoiseOffset.y + j) * NoiseFrequency);
+                        NoiseValue = (NoiseValue + 1.0f) * 0.5f;
+
+                        //ZeltexTools.SimplexNoise.SeamlessNoise(i* NoiseFrequency, j * NoiseFrequency, NoiseAmplitude, NoiseAmplitude, NoiseOffset.x);
+                        NoiseValue += NoiseMinimum;
+                        NoiseValue = Mathf.Clamp(NoiseValue, NoiseLimits.x, NoiseLimits.y);
+
+                        int RedValue = Mathf.RoundToInt(Mathf.Lerp(MySecondaryColor.r, MyColor.r, NoiseValue));
+                        int GreenValue = Mathf.RoundToInt(Mathf.Lerp(MySecondaryColor.g, MyColor.g, NoiseValue));
+                        int BlueValue = Mathf.RoundToInt(Mathf.Lerp(MySecondaryColor.b, MyColor.b, NoiseValue));
+
+                        /*NoiseValue = NoiseAmplitude * SimplexNoise.Noise((NoiseOffset.x + i) * NoiseFrequency, (NoiseOffset.y + j) * NoiseFrequency);
+                        RedValue = Mathf.RoundToInt(Mathf.Lerp(RedValue, PixelColor.r, NoiseValue));
+                        GreenValue = Mathf.RoundToInt(Mathf.Lerp(GreenValue, PixelColor.g, NoiseValue));
+                        BlueValue = Mathf.RoundToInt(Mathf.Lerp(BlueValue, PixelColor.b, NoiseValue));*/
+
+                        RedValue = Mathf.Clamp(RedValue, 0, 255);
+                        GreenValue = Mathf.Clamp(GreenValue, 0, 255);
+                        BlueValue = Mathf.Clamp(BlueValue, 0, 255);
+                        if (Percentage != 1)
+                        {
+                            float MinusPercentage = 1 - Percentage;
+                            RedValue = Mathf.RoundToInt(RedValue * Percentage + MinusPercentage * PixelColor.r);
+                            GreenValue = Mathf.RoundToInt(GreenValue * Percentage + MinusPercentage * PixelColor.g);
+                            BlueValue = Mathf.RoundToInt(BlueValue * Percentage + MinusPercentage * PixelColor.b);
+                        }
                         PixelColors[PixelIndex] = new Color32(
                             (byte)RedValue,
                             (byte)GreenValue,

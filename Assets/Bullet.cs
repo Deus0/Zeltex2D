@@ -11,6 +11,7 @@ namespace Zeltex2D
     {
         public Character2D ShooterCharacter;
         public float DeathTime = 1.5f;
+        public float AttackDamage = 1;
         private bool WasHit = false;
 
         private void Start()
@@ -38,7 +39,7 @@ namespace Zeltex2D
                 {
                     WasHit = true;
                     gameObject.AddComponent<ShrinkDeath>();
-                    HitCharacter.GetHit(ShooterCharacter);
+                    HitCharacter.GetHit(ShooterCharacter, AttackDamage);
                 }
             }
         }

@@ -9,6 +9,7 @@ namespace Zeltex2D
         private float LastScanTime;
         private float ScanCooldown = 0.2f;
         private MinionControl2D MyController;
+        private Character2D ClosestTower;
         // Use this for initialization
         void Start()
         {
@@ -22,7 +23,7 @@ namespace Zeltex2D
             if (Time.time - LastScanTime >= ScanCooldown && !MyController.IsAttacking())
             {
                 LastScanTime = Time.time;
-                Character2D ClosestTower = MapData.Instance.GetClosestWithTag("Tower", transform.position);
+                ClosestTower = MapData.Instance.GetClosestIshWithTag("Tower", transform.position, 2);
                 if (ClosestTower != null)
                 {
                     MyController.Attack(ClosestTower.transform);

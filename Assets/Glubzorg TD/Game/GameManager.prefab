@@ -306,3 +306,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelFaderPrefab: {fileID: 1071639760556172, guid: adc68454aab40b440ad68b4577360e3b,
     type: 2}
+  MyTowerBuilder: {fileID: 0}
+  MySpawner: {fileID: 0}

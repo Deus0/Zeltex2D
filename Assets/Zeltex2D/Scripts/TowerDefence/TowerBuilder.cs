@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Zeltex2D.TowerDefence
 {
@@ -11,34 +12,54 @@ namespace Zeltex2D.TowerDefence
     public class TowerBuilder : UserControl2D
     {
         [Header("Tower Builder")]
-        public GameObject TowerPrefab;
+        public List<GameObject> TowerPrefabs;
+        public List<int> GoldCosts;
         public MapData Map;
         private Character2D SelectedTower;
         private List<Character2D> SpawnedTowers = new List<Character2D>();
         private Rigidbody2D MyRigid;
 
-        public UnityEngine.UI.Text GoldText;
-        public GameObject TestingMonsterPrefab;
-        private int GoldCoins = 1;
-        private int GoldCost = 1;
+        public Text GoldText;
+        public Text TowersText;
+        //public GameObject TestingMonsterPrefab;
+
+        [Header("Stats")]
+        public int GoldCoins = 5;
         private FoW.FogOfWar MyFog;
         private bool CanBuild;
+        public Character2DGui SelectedGui;
+        public SpawnZone MySpawner;
+
+        public ActionType MyActionType = ActionType.Select;
+        [HideInInspector]
+        public int TowerPrefabIndex = -1;
+        public SpriteRenderer PreviewSprite;
+
+        public enum ActionType
+        {
+            Select,
+            Build,
+            None
+        }
 
         private void Start()
         {
+            TowerPrefabIndex = -1;
             MyFog = Camera.main.GetComponent<FoW.FogOfWar>();
             MyRigid = GetComponent<Rigidbody2D>();
-            StartCoroutine(SpawnInTime());
+            OnGoldCoinsChanged();
         }
 
-        private IEnumerator SpawnInTime()
+        public void OnBeginGame()
         {
-            Vector3 SpawnPosition = transform.position;
-            yield return new WaitForSeconds(5f);
-            SpawnTower(SpawnPosition);
-            SelectTower(SpawnedTowers[0].GetComponent<Character2D>());
-            OnGoldCoinsChanged();
             CanBuild = true;
+            TowerPrefabIndex = 0;
+        }
+
+        public void AddGold(int GoldAddition)
+        {
+            GoldCoins += GoldAddition;
+            OnGoldCoinsChanged();
         }
 
         public override void SelectCharacter(Character2D NewSelectedCharacter)
@@ -61,33 +82,73 @@ namespace Zeltex2D.TowerDefence
         protected override void Update()
         {
             base.Update();  // for now !
-            if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            PreviewSprite.enabled = false;
+            if (Time.timeScale != 0)
             {
-                // get tile selected
-                // is tower on this tile? if so, select new tower
-
-                // if it is a wall, show its health
-
-                // if it is ground, show the build options
-
-                // If building mode, build selected tower
-                /*if (GoldCoins >= GoldCost)
+                if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
                 {
-                    Vector3 SpawnPosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
-                    SpawnPosition.z = 0;
-                    GameObject MySpawn = Instantiate(TestingMonsterPrefab, SpawnPosition, Quaternion.identity);
-                    MapData.Instance.SpawnedCharacters.Add(MySpawn);
-                    GoldCoins -= GoldCost;    // minus cost of it
-                    OnGoldCoinsChanged();
-                }*/
-                Vector3 SpawnPosition = GetMousePositionInMap();
-                Character2D TowerAtPosition = GetTowerAtPosition(SpawnPosition);
-                if (TowerAtPosition)
+                    if (MyActionType == ActionType.Select)
+                    {
+                        ActionSelect();
+                    }
+                    else if (MyActionType == ActionType.Build)
+                    {
+                        ActionBuild();
+                    }
+                }
+                else if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
                 {
-                    SelectTower(TowerAtPosition);
+                    if (MyActionType == ActionType.Build)
+                    {
+                        PreviewBuild();
+                    }
+                    else if (MyActionType == ActionType.Select)
+                    {
+                        PreviewSelect();
+                    }
+                }
+                CheckForNullTowers();
+                if (CanBuild && SpawnedTowers.Count == 0)
+                {
+                    GameManager.Instance.GameOver();
                 }
             }
-            if (CanBuild && Input.GetMouseButtonDown(1) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        }
+
+        private void PreviewSelect()
+        {
+            if (CanBuild)
+            {
+                Vector3 SpawnPosition = GetMousePositionInMap();
+                Character2D HighlightedCharacter = GetTowerAtPosition(SpawnPosition);
+                if (HighlightedCharacter != null && HighlightedCharacter != SelectedTower)//new Vector3(Mathf.CeilToInt(SpawnPosition.x), Mathf.CeilToInt(SpawnPosition.y), 0)) == (byte)255))
+                {
+                    PreviewSprite.transform.position = SpawnPosition;
+                    PreviewSprite.enabled = true;
+                }
+            }
+        }
+
+        private void PreviewBuild()
+        {
+            if (CanBuild)
+            {
+                Vector3 SpawnPosition = GetMousePositionInMap();
+                if (GoldCoins >= GoldCosts[TowerPrefabIndex])
+                {
+                    if (!(MyFog.IsInCompleteFog(new Vector3(SpawnPosition.x - 0.5f, SpawnPosition.y - 0.5f, 0)))
+                        && GetTowerAtPosition(SpawnPosition) == null)//new Vector3(Mathf.CeilToInt(SpawnPosition.x), Mathf.CeilToInt(SpawnPosition.y), 0)) == (byte)255))
+                    {
+                        PreviewSprite.transform.position = SpawnPosition;
+                        PreviewSprite.enabled = true;
+                    }
+                }
+            }
+        }
+
+        private void ActionBuild()
+        {
+            if (CanBuild)
             {
                 // get tile selected
                 // is tower on this tile? if so, select new tower
@@ -96,22 +157,48 @@ namespace Zeltex2D.TowerDefence
 
                 // if it is ground, show the build options
                 Vector3 SpawnPosition = GetMousePositionInMap();
-                if (GoldCoins >= GoldCost)
+                if (GoldCoins >= GoldCosts[TowerPrefabIndex])
                 {
                     if (!(MyFog.IsInCompleteFog(new Vector3(SpawnPosition.x - 0.5f, SpawnPosition.y - 0.5f, 0)))
                         && GetTowerAtPosition(SpawnPosition) == null)//new Vector3(Mathf.CeilToInt(SpawnPosition.x), Mathf.CeilToInt(SpawnPosition.y), 0)) == (byte)255))
                     {
                         SpawnTower(SpawnPosition);
-                        GoldCoins -= GoldCost;    // minus cost of it
+                        GoldCoins -= GoldCosts[TowerPrefabIndex];    // minus cost of it
                         OnGoldCoinsChanged();
                     }
                 }
             }
-            CheckForNullTowers();
-            if (CanBuild && SpawnedTowers.Count == 0)
+        }
+
+        private void ActionSelect()
+        {
+            // get tile selected
+            // is tower on this tile? if so, select new tower
+
+            // if it is a wall, show its health
+
+            // if it is ground, show the build options
+
+            // If building mode, build selected tower
+            /*if (GoldCoins >= GoldCost)
             {
-                GameManager.Instance.GameOver();
+                Vector3 SpawnPosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
+                SpawnPosition.z = 0;
+                GameObject MySpawn = Instantiate(TestingMonsterPrefab, SpawnPosition, Quaternion.identity);
+                MapData.Instance.SpawnedCharacters.Add(MySpawn);
+                GoldCoins -= GoldCost;    // minus cost of it
+                OnGoldCoinsChanged();
+            }*/
+            Vector3 SpawnPosition = GetMousePositionInMap();
+            Character2D TowerAtPosition = GetTowerAtPosition(SpawnPosition);
+            //if (TowerAtPosition)
+            {
+                SelectTower(TowerAtPosition);
             }
+        }
+        private void OnUpdatedTowersCount()
+        {
+            TowersText.text = "Towers [" + SpawnedTowers.Count + "]";
         }
 
         private void CheckForNullTowers()
@@ -121,37 +208,55 @@ namespace Zeltex2D.TowerDefence
                 if (SpawnedTowers[i] == null)
                 {
                     SpawnedTowers.RemoveAt(i);
+                    OnUpdatedTowersCount();
                 }
             }
         }
 
-        public UnityEngine.UI.Text SelectedTowerLabel;
-
-        private void SelectTower(Character2D TowerAtPosition)
+        public void SelectTower(Character2D TowerAtPosition, bool IsForce = false)
         {
-            SelectedTower = TowerAtPosition;
-            if (SelectedTower.name.Contains("Clone"))
+            if (SelectedTower)
             {
-                SelectedTower.name = SelectedTower.name.Remove(SelectedTower.name.IndexOf("(Clone)"));
+                SelectedTower.RemoveGlow();
             }
-            SelectedTowerLabel.text = SelectedTower.name + " [" +
-                Mathf.FloorToInt(SelectedTower.transform.position.x) + "," +
-                Mathf.FloorToInt(SelectedTower.transform.position.y) + "]";
-
+            SelectedTower = TowerAtPosition;
+            if (SelectedTower)
+            {
+                SelectedTower.Glow();
+            }
+            SelectedGui.SelectCharacter(SelectedTower, IsForce);
         }
 
-        private void SpawnTower(Vector3 SpawnPosition)
+        public GameObject SpawnTower(Vector3 SpawnPosition)
         {
-            GameObject MySpawn = Instantiate(TowerPrefab, SpawnPosition, Quaternion.identity);
+            GameObject MySpawn = Instantiate(TowerPrefabs[TowerPrefabIndex + 1], SpawnPosition, Quaternion.identity);
             SpawnedTowers.Add(MySpawn.GetComponent<Character2D>());
+            OnUpdatedTowersCount();
             MapData.Instance.SpawnedCharacters.Add(MySpawn);
             MySpawn.transform.SetParent(GameObject.Find("CaveLevel").transform);
             SpawnedTowers[SpawnedTowers.Count - 1].OnKilledCharacterEvent.AddListener(OnKilledCharacter);
+            return MySpawn;
         }
-        private void OnKilledCharacter()
+
+        private void OnKilledCharacter(Character2D DeadCharacter)
         {
-            GoldCoins += Mathf.FloorToInt(Random.Range(0, 1.99f));
+            int GoldAdd = DeadCharacter.GetGoldCoinsDrop();
+            GoldCoins += GoldAdd;// Mathf.FloorToInt(Random.Range(0, 1.99f));
             OnGoldCoinsChanged();
+            if (GoldAdd > 0)
+            {
+                CreateHealthPopup(DeadCharacter.transform.position, GoldAdd);
+            }
+        }
+
+        public GameObject PopupPrefab;
+        private void CreateHealthPopup(Vector3 Position, float Health)
+        {
+            GameObject Popup = Instantiate(PopupPrefab);
+            Popup.transform.position = Position + new Vector3(0, 1, 0);
+            Popup PopupComponent = Popup.GetComponent<Popup>();
+            PopupComponent.Initialise(Health, 2);
+            Destroy(Popup, 2f);
         }
 
         private Vector3 GetMousePositionInMap()
@@ -170,6 +275,7 @@ namespace Zeltex2D.TowerDefence
                 if (SpawnedTowers[i] == null)
                 {
                     SpawnedTowers.RemoveAt(i);
+                    OnUpdatedTowersCount();
                 }
                 else
                 {

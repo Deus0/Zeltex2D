@@ -14,12 +14,15 @@ namespace Zeltex2D
         private float LastFired;
         private Character2D MyCharacter;
         public float FireRange = 3f;
+        private Character2D TargetMinion;
+        public LineRenderer AimLine;
 
         // Use this for initialization
         void Start()
         {
             LastFired = Time.time;
             MyCharacter = GetComponent<Character2D>();
+            AimLine.SetPositions(new Vector3[] { transform.position, transform.position + 0.3f * (new Vector3(0, 1f, 0)) });
         }
 
         // Update is called once per frame
@@ -39,15 +42,26 @@ namespace Zeltex2D
 
         private void ShootAtMinion()
         {
-            Character2D Minion = MapData.Instance.GetClosestWithTag("Minion", transform.position, FireRange);
-            if (Minion)
+            if (TargetMinion == null)
+            {
+                TargetMinion = MapData.Instance.GetClosestWithTag("Minion", transform.position, FireRange);
+            }
+            if (TargetMinion && FoW.FogOfWar.current.IsInFog(TargetMinion.transform.position + new Vector3(-0.5f, -0.5f, 0), 0.2f))
+            {
+                TargetMinion = null;
+            }
+            if (TargetMinion)
             {
                 // Check that minion is in fog!
-                Vector2 BulletDirection = (Minion.transform.position - transform.position).normalized;
+                Vector2 BulletDirection = (TargetMinion.transform.position - transform.position).normalized;
                 GameObject MyBullet = Instantiate(BulletPrefab, transform.position + FireSpawnOffset * (new Vector3(BulletDirection.x, BulletDirection.y, 0)), Quaternion.Euler(BulletDirection.x, BulletDirection.y, 0));
                 Rigidbody2D BulletPhysics = MyBullet.GetComponent<Rigidbody2D>();
                 BulletPhysics.AddForce(BulletDirection * FireForce);
-                MyBullet.GetComponent<Bullet>().ShooterCharacter = MyCharacter;
+                Bullet MyBulletComponent = MyBullet.GetComponent<Bullet>();
+                MyBulletComponent.ShooterCharacter = MyCharacter;
+                MyBulletComponent.AttackDamage = MyCharacter.AttackDamage;
+                MyBulletComponent.DeathTime = MyCharacter.Range / 2f;
+                AimLine.SetPositions(new Vector3[] { transform.position, transform.position + 0.3f * (new Vector3(BulletDirection.x, BulletDirection.y, 0)) });
             }
         }
     }

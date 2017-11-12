@@ -79,6 +79,48 @@ namespace Zeltex2D
                 return SpawnedCharacters[FoundIndex].GetComponent<Character2D>();
             }
         }
+        public Character2D GetClosestIshWithTag(string MyTag, Vector3 MyPosition, float VariationDistance, float DefaultSmallest = 10000)
+        {
+            int FoundIndex = -1;
+            float SmallestDistance = DefaultSmallest;
+            float ThisDistance = 0;
+            for (int i = 0; i < SpawnedCharacters.Count; i++)
+            {
+                if (SpawnedCharacters[i] && SpawnedCharacters[i].tag == MyTag)
+                {
+                    ThisDistance = Vector3.Distance(MyPosition, SpawnedCharacters[i].transform.position);
+                    if (SmallestDistance > ThisDistance)
+                    {
+                        FoundIndex = i;
+                        SmallestDistance = ThisDistance;
+                    }
+                }
+            }
+            List<int> Indexes = new List<int>();
+            for (int i = 0; i < SpawnedCharacters.Count; i++)
+            {
+                if (SpawnedCharacters[i] && SpawnedCharacters[i].tag == MyTag)
+                {
+                    ThisDistance = Vector3.Distance(MyPosition, SpawnedCharacters[i].transform.position);
+                    if (ThisDistance >= SmallestDistance - VariationDistance && ThisDistance <= SmallestDistance + VariationDistance)
+                    {
+                        Indexes.Add(i);
+                    }
+                }
+            }
+            if (Indexes.Count > 0)
+            {
+                FoundIndex = Indexes[Random.Range(0, Indexes.Count - 1)];
+            }
+            if (FoundIndex == -1)
+            {
+                return null;
+            }
+            else
+            {
+                return SpawnedCharacters[FoundIndex].GetComponent<Character2D>();
+            }
+        }
 
         public void SetCharactersMovement(bool NewState)
         {

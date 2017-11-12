@@ -43,8 +43,8 @@ GameObject:
   - component: {fileID: 50468699686675186}
   - component: {fileID: 61730047875603592}
   - component: {fileID: 114716440138869172}
-  - component: {fileID: 114508541868977520}
-  - component: {fileID: 114964746880404552}
+  - component: {fileID: 114965157664943446}
+  - component: {fileID: 114668142578487528}
   m_Layer: 9
   m_Name: GlubGlub
   m_TagString: Player
@@ -68,7 +68,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1603325840641756
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,7 +150,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1353944332936332}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11, y: 12, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4530495818133032}
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6ff07a24db6f6438a72d8871c52730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetCharacter: {fileID: 114508541868977520}
+  TargetCharacter: {fileID: 0}
 --- !u!114 &114139294665373330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -460,21 +460,6 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
---- !u!114 &114508541868977520
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1353944332936332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d38b4c77c59b9fb4b9345c9726eab201, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MyInventory: {fileID: 0}
-  Slime: {fileID: 0}
-  MySkillbar: {fileID: 0}
-  MyCamera: {fileID: 0}
 --- !u!114 &114547921364433838
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -488,6 +473,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &114668142578487528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1353944332936332}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b130f358dcb26548b2ff0923d496dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  shapeType: 0
+  offset: {x: 0, y: 0}
+  radius: 2
+  innerRadius: 1
+  angle: 180
+  texture: {fileID: 0}
+  rotateToForward: 0
+  lineOfSightMask:
+    serializedVersion: 2
+    m_Bits: 4294966783
+  lineOfSightPenetration: 0
+  cellBased: 1
+  antiFlicker: 0
 --- !u!114 &114711281399240190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -504,6 +514,8 @@ MonoBehaviour:
   MyBars: []
   DoClearBars: 0
   DoSpawnBars: 0
+  IsUseBars: 0
+  PercentageBar: {fileID: 0}
 --- !u!114 &114716440138869172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -518,12 +530,36 @@ MonoBehaviour:
   MyHealthBar: {fileID: 114711281399240190}
   MyDialogue: {fileID: 0}
   MyOutline: {fileID: 0}
+  Level: 1
   Health: 8
-  MaxSpeed: 3
   HealthRegenRate: 0
+  HealthRegenValue: 0
+  AttackDamage: 1
+  AttackSpeed: 1
+  Vision: 2
+  Range: 2
+  MaxHealth: 5
+  MaxSpeed: 3
+  IsDestroyOnZeroHealth: 1
   IsShowHealthBar: 0
   CanMove: 1
   Direction: 0
+  HealthBarPrefab: {fileID: 0}
+  OnHealthUpdatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnHealthRegenUpdatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnKilledCharacterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Zeltex2D.Character2D+Character2DEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114725334425056830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -601,31 +637,38 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 1, y: 1}
   m_UseGraphicAlpha: 1
---- !u!114 &114964746880404552
+--- !u!114 &114965157664943446
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1353944332936332}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b130f358dcb26548b2ff0923d496dc6, type: 3}
+  m_Script: {fileID: 11500000, guid: b74c202a2c656304b948dbbea358b471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
-  shapeType: 0
-  offset: {x: 0, y: 0}
-  radius: 2
-  innerRadius: 1
-  angle: 180
-  texture: {fileID: 0}
-  rotateToForward: 0
-  lineOfSightMask:
-    serializedVersion: 2
-    m_Bits: 4294966783
-  lineOfSightPenetration: 0
-  cellBased: 1
-  antiFlicker: 0
+  MyInventory: {fileID: 0}
+  Slime: {fileID: 0}
+  MySkillbar: {fileID: 0}
+  MyCamera: {fileID: 0}
+  TowerPrefabs:
+  - {fileID: 1340397186055834, guid: 9d5237fb1c4bc334eb86c0922e1f60c9, type: 2}
+  - {fileID: 1631930057539586, guid: aaa5280eefb95f14794f8ae02d5ae7b3, type: 2}
+  - {fileID: 1950787318175874, guid: deb342eb915770d40a3bc765e4a1208d, type: 2}
+  - {fileID: 1074412985248080, guid: 536ff0623926a6648aeffe760fdef7e8, type: 2}
+  GoldCosts: 050000000a00000014000000
+  Map: {fileID: 0}
+  GoldText: {fileID: 0}
+  TowersText: {fileID: 0}
+  GoldCoins: 15
+  SelectedGui: {fileID: 0}
+  MySpawner: {fileID: 0}
+  MyActionType: 0
+  TowerPrefabIndex: 0
+  PreviewSprite: {fileID: 0}
+  PopupPrefab: {fileID: 1783956346531976, guid: 74add7c9357311144b6712de34059d58,
+    type: 2}
 --- !u!212 &212048201453597390
 SpriteRenderer:
   m_ObjectHideFlags: 1

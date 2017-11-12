@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zeltex2D.TowerDefence;
 
 namespace Zeltex2D
 {
@@ -15,11 +16,34 @@ namespace Zeltex2D
         private CanvasFader MyFader;
         public static GameManager Instance;
         private bool IsGameOvering;
+        public TowerBuilder MyTowerBuilder;
+        public WaveSpawner MySpawner;
+        public CanvasGroup ExplorationGui;
 
         private void Awake()
         {
             LevelFader = GameObject.Instantiate(LevelFaderPrefab);
             Instance = this;
+        }
+
+        private void Start()
+        {
+            if (MyTowerBuilder && MySpawner)
+            {
+                StartCoroutine(SpawnInTime());
+            }
+        }
+
+        private IEnumerator SpawnInTime()
+        {
+            Vector3 SpawnPosition = MyTowerBuilder.transform.position;
+            yield return new WaitForSeconds(0.5f);
+            Character2D SpawnedCharacter = MyTowerBuilder.SpawnTower(SpawnPosition).GetComponent<Character2D>();
+            yield return new WaitForSeconds(4f);
+            ExplorationGui.interactable = true;
+            MyTowerBuilder.OnBeginGame();
+            MyTowerBuilder.SelectTower(SpawnedCharacter);
+            MySpawner.OnBeginGame();
         }
 
         public void GameOver()

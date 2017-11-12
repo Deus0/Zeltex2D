@@ -15,6 +15,16 @@ namespace Zeltex2D
         [Header("Testing")]
         public bool DoClearBars;
         public bool DoSpawnBars;
+        public bool IsUseBars;
+        public RectTransform PercentageBar;
+
+        private void Start()
+        {
+            if (IsUseBars == false && BarTemplate.transform.parent)
+            {
+                BarTemplate.transform.parent.gameObject.SetActive(false);
+            }
+        }
 
         private void Update()
         {
@@ -32,51 +42,92 @@ namespace Zeltex2D
 
         public void ClearBars()
         {
-            for (int i = 0; i <  MyBars.Count; i++)
+            if (IsUseBars)
             {
-                if (MyBars[i])
+                for (int i = 0; i < MyBars.Count; i++)
                 {
-                    if (Application.isPlaying)
+                    if (MyBars[i])
                     {
-                        Destroy(MyBars[i]);
-                    }
-                    else
-                    {
-                        DestroyImmediate(MyBars[i]);
+                        if (Application.isPlaying)
+                        {
+                            Destroy(MyBars[i]);
+                        }
+                        else
+                        {
+                            DestroyImmediate(MyBars[i]);
+                        }
                     }
                 }
+                MyBars.Clear();
             }
-            MyBars.Clear();
+        }
+
+        private float MaxHealth;
+
+        public void SetHealthBars(float HealthBarsCount)
+        {
+            if (IsUseBars)
+            {
+                SetHealthBars((int)HealthBarsCount);
+            }
+            else if (PercentageBar)
+            {
+                MaxHealth = HealthBarsCount;
+                PercentageBar.offsetMax = new Vector2(0, PercentageBar.offsetMax.y);
+            }
+        }
+
+        public void SetBars(float NewBarCount)
+        {
+            if (IsUseBars)
+            {
+                SetBars((int)NewBarCount);
+            }
+            else if (PercentageBar)
+            {
+                float BarLength = PercentageBar.parent.gameObject.GetComponent<RectTransform>().rect.size.x - 3.6f - 3.6f;
+                PercentageBar.offsetMax = new Vector2(-BarLength + ((NewBarCount / MaxHealth) * BarLength), PercentageBar.offsetMax.y);
+                if (NewBarCount == 0)
+                {
+                    PercentageBar.parent.gameObject.SetActive(false);
+                }
+            }
         }
 
         public void SetHealthBars(int HealthBarsCount)
         {
             ClearBars();
-            for (int i = 0; i < HealthBarsCount; i++)
+            if (IsUseBars)
             {
-                GameObject Newbar = Instantiate(BarTemplate, BarTemplate.transform.parent);
-                Newbar.name = "HealthBar" + i;
-                Newbar.SetActive(true);
-                MyBars.Add(Newbar);
+                for (int i = 0; i < HealthBarsCount; i++)
+                {
+                    GameObject Newbar = Instantiate(BarTemplate, BarTemplate.transform.parent);
+                    Newbar.name = "HealthBar" + i;
+                    Newbar.SetActive(true);
+                    MyBars.Add(Newbar);
+                }
             }
         }
 
         public void SetBars(int NewBarCount)
         {
-            for (int i = 0; i < MyBars.Count; i++)
+            if (IsUseBars)
             {
-                if (i >= NewBarCount)
+                for (int i = 0; i < MyBars.Count; i++)
                 {
-                    MyBars[i].SetActive(false);
+                    if (i >= NewBarCount)
+                    {
+                        MyBars[i].SetActive(false);
+                    }
+                    else
+                    {
+                        MyBars[i].SetActive(true);
+                    }
                 }
-                else
+                if (NewBarCount == 0)
                 {
-                    MyBars[i].SetActive(true);
+                    gameObject.SetActive(false);
                 }
-            }
-            if (NewBarCount == 0)
-            {
-                gameObject.SetActive(false);
             }
         }
 
