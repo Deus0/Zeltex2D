@@ -205,9 +205,28 @@ namespace Zeltex2D
         public void SetLevel(int NewLevel)
         {
             Level = NewLevel;
-            MaxHealth = 1 + Level / 4;
+            int HealthType = UnityEngine.Random.Range(1, 30);
+            if (HealthType <= 20)
+            {
+                MaxHealth = 1 + Level / 3;
+            }
+            else
+            {
+                MaxHealth = 1 + Level / 2;
+            }
             Health = MaxHealth;
             MyHealthBar.SetHealthBars(Health);
+            MaxSpeed = 0.8f + 0.03f * Level;
+            int MovementType = UnityEngine.Random.Range(1, 30);
+            if (MovementType <= 15)
+            {
+                SetMovementSpeed(Mathf.Clamp(MaxSpeed, 0, 1.4f));
+            }
+            else if (MovementType <= 18)
+            {
+                SetMovementSpeed(MaxSpeed); // unparraled speed
+            }
+            // else no new movement speed, default one!
         }
 
         public void SetSize(float NewSize)
@@ -250,31 +269,35 @@ namespace Zeltex2D
 
         public void GetHit(Character2D MyCharacter, float Damage = -1)
         {
-            if (Damage == -1)
+            if (Health > 0)
             {
-                Damage = MyCharacter.AttackDamage;
-            }
-            LastTakenHit = Time.time;
-            Health -= Damage;
-            Health = Mathf.Clamp(Health, 0, MaxHealth);
-            OnHealthUpdatedEvent.Invoke();
-            if (MyHealthBar)
-            {
-                MyHealthBar.SetBars(Health);
-            }
-            if (MyControl)
-            {
-                MyControl.OnHit(MyCharacter);
-            }
-            if (Health == 0 && IsDestroyOnZeroHealth && !IsDying)
-            {
-                IsDying = true;
-                MapData.Instance.SpawnedCharacters.Remove(gameObject);
-                MyHealthBar.SetVisibility(false);
-                SetMovement(false);
-                ShrinkDeath MyDeath = gameObject.AddComponent<ShrinkDeath>();
-                MyDeath.SetDeathTime(0.4f);
-                MyCharacter.OnKilledCharacter(this);
+                if (Damage == -1)
+                {
+                    Damage = MyCharacter.AttackDamage;
+                }
+                LastTakenHit = Time.time;
+                Health -= Damage;
+                Health = Mathf.Clamp(Health, 0, MaxHealth);
+                MapData.Instance.CreateHealthPopup(transform.position, Damage, 0);
+                OnHealthUpdatedEvent.Invoke();
+                if (MyHealthBar)
+                {
+                    MyHealthBar.SetBars(Health);
+                }
+                if (MyControl)
+                {
+                    MyControl.OnHit(MyCharacter);
+                }
+                if (Health == 0 && IsDestroyOnZeroHealth && !IsDying)
+                {
+                    IsDying = true;
+                    MapData.Instance.SpawnedCharacters.Remove(gameObject);
+                    MyHealthBar.SetVisibility(false);
+                    SetMovement(false);
+                    ShrinkDeath MyDeath = gameObject.AddComponent<ShrinkDeath>();
+                    MyDeath.SetDeathTime(0.4f);
+                    MyCharacter.OnKilledCharacter(this);
+                }
             }
         }
 

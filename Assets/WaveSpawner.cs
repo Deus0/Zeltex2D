@@ -68,7 +68,7 @@ namespace Zeltex2D
         {
             // Either increase number, or increase their health
             //MinionsToSpawn++;
-            if (WaveCount % 5 == 0)
+            if (WaveCount % 4 == 0)
             {
                 MinionsToSpawn++;
             }

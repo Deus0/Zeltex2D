@@ -366,5 +366,27 @@ namespace Zeltex2D
                 }
             }
         }
+
+
+
+        public GameObject GoldPopupPrefab;
+        public GameObject HealthPopupPrefab;
+
+        public void CreateHealthPopup(Vector3 Position, float Health, int PrefabIndex = 0)
+        {
+            GameObject Popup;
+            if (PrefabIndex == 0)
+            {
+                Popup = Instantiate(HealthPopupPrefab);
+            }
+            else
+            {
+                Popup = Instantiate(GoldPopupPrefab);
+            }
+            Popup.transform.position = Position + new Vector3(0, 1, 0);
+            Popup PopupComponent = Popup.GetComponent<Popup>();
+            PopupComponent.Initialise(Health, 2);
+            Destroy(Popup, 2f);
+        }
     }
 }

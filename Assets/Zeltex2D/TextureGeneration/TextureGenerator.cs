@@ -34,6 +34,7 @@ namespace Zeltex2D.Generators
         public bool DoGenerateNoise;
         public GenerateType DoGenerateType = GenerateType.Noise;
         public float Percentage = 1f;
+        public bool IsAddOutline;
 
         public enum GenerateType
         {
@@ -65,32 +66,39 @@ namespace Zeltex2D.Generators
                 {
                     MySecondaryColor = ThirdColor;
                 }
-                SpriteRenderer MySprite = GetComponent<SpriteRenderer>();
-                //Noise(GetComponent<SpriteRenderer>().sprite.texture);
-                Texture2D NewTexture = new Texture2D(MySprite.sprite.texture.width, MySprite.sprite.texture.height, MySprite.sprite.texture.format, false);
-                NewTexture.filterMode = FilterMode.Point;
-                Graphics.CopyTexture(MySprite.sprite.texture, NewTexture);
-                NoiseOffset.x = transform.position.x * MySprite.sprite.texture.width;
-                NoiseOffset.y = transform.position.y * MySprite.sprite.texture.height;
-                if (DoGenerateType == GenerateType.Noise)
-                {
-                    Noise(NewTexture);
-                }
-                else if (DoGenerateType == GenerateType.Bricks)
-                {
-                    Bricks(NewTexture);
-                }
-                else if (DoGenerateType == GenerateType.AddNoise)
-                {
-                    Percentage = Random.Range(0.2f, 0.75f);
-                    SetPrimaryColor(new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(155, 255)));
-                    SetSecondaryColor(new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(155, 255)));
-                    AddNoise(NewTexture, Percentage);
-                }
-                Sprite TheSprite = Sprite.Create(NewTexture, MySprite.sprite.textureRect, new Vector2(0.5f, 0.5f), 32, 4, SpriteMeshType.FullRect, Vector4.zero);
-                MySprite.sprite = TheSprite;
+                GenerateSprite();
+                HasStarted = true;
             }
         }
+
+        public void GenerateSprite()
+        {
+            SpriteRenderer MySprite = GetComponent<SpriteRenderer>();
+            //Noise(GetComponent<SpriteRenderer>().sprite.texture);
+            Texture2D NewTexture = new Texture2D(MySprite.sprite.texture.width, MySprite.sprite.texture.height, MySprite.sprite.texture.format, false);
+            NewTexture.filterMode = FilterMode.Point;
+            Graphics.CopyTexture(MySprite.sprite.texture, NewTexture);
+            NoiseOffset.x = transform.position.x * MySprite.sprite.texture.width;
+            NoiseOffset.y = transform.position.y * MySprite.sprite.texture.height;
+            if (DoGenerateType == GenerateType.Noise)
+            {
+                Noise(NewTexture);
+            }
+            else if (DoGenerateType == GenerateType.Bricks)
+            {
+                Bricks(NewTexture);
+            }
+            else if (DoGenerateType == GenerateType.AddNoise)
+            {
+                Percentage = Random.Range(0.2f, 0.75f);
+                SetPrimaryColor(new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(155, 255)));
+                SetSecondaryColor(new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(155, 255)));
+                AddNoise(NewTexture, Percentage);
+            }
+            Sprite TheSprite = Sprite.Create(NewTexture, MySprite.sprite.textureRect, new Vector2(0.5f, 0.5f), 32, 4, SpriteMeshType.FullRect, Vector4.zero);
+            MySprite.sprite = TheSprite;
+        }
+        public bool HasStarted;
 
         private void Update()
         {
@@ -522,10 +530,6 @@ namespace Zeltex2D.Generators
                         RedValue = Mathf.RoundToInt(Mathf.Lerp(RedValue, PixelColor.r, NoiseValue));
                         GreenValue = Mathf.RoundToInt(Mathf.Lerp(GreenValue, PixelColor.g, NoiseValue));
                         BlueValue = Mathf.RoundToInt(Mathf.Lerp(BlueValue, PixelColor.b, NoiseValue));*/
-
-                        RedValue = Mathf.Clamp(RedValue, 0, 255);
-                        GreenValue = Mathf.Clamp(GreenValue, 0, 255);
-                        BlueValue = Mathf.Clamp(BlueValue, 0, 255);
                         if (Percentage != 1)
                         {
                             float MinusPercentage = 1 - Percentage;
@@ -533,6 +537,53 @@ namespace Zeltex2D.Generators
                             GreenValue = Mathf.RoundToInt(GreenValue * Percentage + MinusPercentage * PixelColor.g);
                             BlueValue = Mathf.RoundToInt(BlueValue * Percentage + MinusPercentage * PixelColor.b);
                         }
+                        if (IsAddOutline)
+                        {
+                            if (j != MyTexture.height - 1)
+                            {
+                                Color32 PixelUp = PixelColors[GetPixelIndex(i, j + 1, MyTexture.width)];
+                                if (PixelUp.a == 0)
+                                {
+                                    RedValue = Mathf.RoundToInt(RedValue * 0.3f);
+                                    GreenValue = Mathf.RoundToInt(GreenValue * 0.3f);
+                                    BlueValue = Mathf.RoundToInt(BlueValue * 0.3f);
+                                }
+                            }
+                            if (j != 0)
+                            {
+                                Color32 PixelUp = PixelColors[GetPixelIndex(i, j - 1, MyTexture.width)];
+                                if (PixelUp.a == 0)
+                                {
+                                    RedValue = Mathf.RoundToInt(RedValue * 0.3f);
+                                    GreenValue = Mathf.RoundToInt(GreenValue * 0.3f);
+                                    BlueValue = Mathf.RoundToInt(BlueValue * 0.3f);
+                                }
+                            }
+                            if (i != MyTexture.width - 1)
+                            {
+                                Color32 PixelUp = PixelColors[GetPixelIndex(i + 1, j , MyTexture.width)];
+                                if (PixelUp.a == 0)
+                                {
+                                    RedValue = Mathf.RoundToInt(RedValue * 0.3f);
+                                    GreenValue = Mathf.RoundToInt(GreenValue * 0.3f);
+                                    BlueValue = Mathf.RoundToInt(BlueValue * 0.3f);
+                                }
+                            }
+                            if (i != 0)
+                            {
+                                Color32 PixelUp = PixelColors[GetPixelIndex(i - 1, j, MyTexture.width)];
+                                if (PixelUp.a == 0)
+                                {
+                                    RedValue = Mathf.RoundToInt(RedValue * 0.3f);
+                                    GreenValue = Mathf.RoundToInt(GreenValue * 0.3f);
+                                    BlueValue = Mathf.RoundToInt(BlueValue * 0.3f);
+                                }
+                            }
+                        }
+
+                        RedValue = Mathf.Clamp(RedValue, 0, 255);
+                        GreenValue = Mathf.Clamp(GreenValue, 0, 255);
+                        BlueValue = Mathf.Clamp(BlueValue, 0, 255);
                         PixelColors[PixelIndex] = new Color32(
                             (byte)RedValue,
                             (byte)GreenValue,

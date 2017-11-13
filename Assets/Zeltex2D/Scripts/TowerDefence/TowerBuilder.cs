@@ -245,18 +245,8 @@ namespace Zeltex2D.TowerDefence
             OnGoldCoinsChanged();
             if (GoldAdd > 0)
             {
-                CreateHealthPopup(DeadCharacter.transform.position, GoldAdd);
+                MapData.Instance.CreateHealthPopup(DeadCharacter.transform.position, GoldAdd, 1);
             }
-        }
-
-        public GameObject PopupPrefab;
-        private void CreateHealthPopup(Vector3 Position, float Health)
-        {
-            GameObject Popup = Instantiate(PopupPrefab);
-            Popup.transform.position = Position + new Vector3(0, 1, 0);
-            Popup PopupComponent = Popup.GetComponent<Popup>();
-            PopupComponent.Initialise(Health, 2);
-            Destroy(Popup, 2f);
         }
 
         private Vector3 GetMousePositionInMap()

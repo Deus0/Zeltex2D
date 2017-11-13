@@ -135,9 +135,16 @@ namespace Zeltex2D
             MapData.Instance.SpawnedCharacters.Add(MySpawn);
             Spawns.Add(MySpawn);
             Character2D MyCharacter = MySpawn.GetComponent<Character2D>();
-            MyCharacter.SetLevel(Mathf.RoundToInt(SpawnLevel * MaxMinionsToSpawn * 2f));
-            MyCharacter.SetSize(3 * 1.5f *(SpawnLevel / 5));
-            MyCharacter.SetMovementSpeed(0.6f);
+            MyCharacter.SetLevel(Mathf.RoundToInt(SpawnLevel * MaxMinionsToSpawn * 4f));
+            MyCharacter.SetSize(2.5f);
+            MyCharacter.SetMovementSpeed(0.5f);
+            Generators.TextureGenerator MyGenerator = MySpawn.transform.GetChild(0).GetComponent<Generators.TextureGenerator>();
+            MyGenerator.IsAddOutline = true;
+            if (MyGenerator.HasStarted)
+            {
+                Debug.LogError("Regenerating boss sprite.");
+                MyGenerator.GenerateSprite();
+            }
         }
 
         public Vector3 GetRandomPosition()
